@@ -1,0 +1,20 @@
+<% if ( id ) { %>
+  <div class="row">
+    <div class="col-4 mx-auto text-center">
+      <div class="alert alert-info" role="alert" data-bs-dismiss="alert">
+        ID not found
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<div class="row">
+  <div class="col-lg-4 offset-lg-4 text-center">
+    <form action="/" method="get">
+      <div class="mb-3">
+        <input type="text" class="form-control" name="id" placeholder="Type your id">
+      </div>
+      <input type="submit" value="Submit" class="btn btn-sm btn-primary">
+    </form>
+  </div>
+</div>
