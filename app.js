@@ -41,7 +41,46 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.locals.moment = moment;
+const statuses = {
+  'Αναμονή ελέγχου': 'Η κατάσταση της επισκευής σας άλλαξε σε ΑΝΑΜΟΝΗ ΕΛΕΓΧΟΥ. \
+    <br>Your RMA status has changed to AWAITING DIAGNOSIS.',
+  'Έλεγχος σε εξέλιξη': 'Η κατάσταση της επισκευής σας άλλαξε σε ΕΛΕΓΧΟΣ ΣΕ ΕΞΕΛΙΞΗ. \
+   <br>Your RMA status has changed to DIAGNOSIS IN PROGRESS.',
+  'Έλεγχος διαθεσιμότητας ανταλλακτικού': 'Η κατάσταση της επισκευής σας άλλαξε σε \
+    <br>ΕΛΕΓΧΟΣ ΔΙΑΘΕΣΙΜΟΤΗΤΑΣ ΑΝΤΑΛΛΑΚΤΙΚΟΥ. Your RMA status has changed to CHECKING SPARE PART \
+    AVAILABILITY.',
+  'Αναμονή αποδοχής προσφοράς': 'Η κατάσταση της επισκευής σας άλλαξε σε ΑΝΑΜΟΝΗ ΑΠΟΔΟΧΗΣ \
+    ΠΡΟΣΦΟΡΑΣ. Your RMA status has changed to PENDING ACCEPTANCE OF COST PROPOSAL.',
+  'Αναμονή ανταλλακτικού': 'Η κατάσταση της επισκευής σας άλλαξε σε ΑΝΑΜΟΝΗ ΑΝΤΑΛΛΑΚΤΙΚΟΥ. \
+    <br>Your RMA status has changed to AWAITING SPARE PART.',
+  'Αναμονή επισκευής': 'Η κατάσταση της επισκευής σας άλλαξε σε ΑΝΑΜΟΝΗ ΕΠΙΣΚΕΥΗΣ. \
+    <br>Your RMA status has changed to AWAITING REPAIR.',
+  'Επισκευή σε εξέλιξη': 'Η κατάσταση της επισκευής σας άλλαξε σε ΕΠΙΣΚΕΥΗ ΣΕ ΕΞΕΛΙΞΗ. \
+    <br>Your RMA status has changed to REPAIR IN PROGRESS.',
+  'Ολοκλήρωση επισκευής': 'Η κατάσταση της επισκευής σας άλλαξε σε ΟΛΟΚΛΗΡΩΣΗ ΕΠΙΣΚΕΥΗΣ. \
+    <br>Your RMA status has changed to REPAIR COMPLETED.',
+  'Παραλαβή - Αποστολή': 'Η κατάσταση της επισκευής σας άλλαξε σε ΠΑΡΑΛΑΒΗ - ΑΠΟΣΤΟΛΗ. \
+    <br>Your RMA status has changed to PICKED UP – IN TRANSIT.'
+}
 
+function handleMessage(rowMessage) {
+  let thisMessage = '';
+  for([status, message] of Object.entries(statuses)) {    
+    if ( rowMessage.includes(status) ) {
+      thisMessage = message;
+    }
+  }
+  return thisMessage;
+}
+
+app.locals.displayRow = function(row) {
+  let thisRow = '';
+  let time = moment(row.date).format("DD-MM-YYYY hh:mm:ss");
+  let message = handleMessage(row.details);
+  if (message) {
+    thisRow = `<tr><td>${time}</td><td>${message}</td></tr`;
+  }
+  return thisRow;
+}
 
 module.exports = app;

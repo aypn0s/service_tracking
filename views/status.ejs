@@ -7,15 +7,7 @@
   </thead>
   <tbody>
     <% rows.forEach(function(row) { %>
-      <tr>
-        <td>
-          <%= moment(row.date).format("DD MM YYYY hh:mm:ss") %>
-        </td>
-
-        <td>
-          <%= row.details.split("by")[0].trim() %>
-        </td>
-      </tr>
+      <%- displayRow(row) %>
     <% }) %>
   </tbody>
 </table>

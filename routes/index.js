@@ -6,13 +6,7 @@ router.get('/', async function(req, res, next) {
   const rmaid = req.query.id
   let rows = []
   if ( rmaid ) { 
-    rows = await query("SELECT * FROM transactions " +  
-      "WHERE rmaid = ? " +
-      "AND (details like '%Created by%' " +
-      "OR details like '%Status Changed from%') " +
-      "ORDER BY date ASC", 
-      [rmaid]
-    )
+    rows = await query("SELECT * FROM rmatrack WHERE rmaid = ?", rmaid)
   }
   if ( rows.length ) {
     res.render('status', {rows: rows})
